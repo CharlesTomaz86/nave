@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+
+
+
+func _ready():
+	$particles.emitting = true
+	$sparks.emitting = true
+
+
+
+func _process(delta):
+	if not $particles.emitting and not $sparks.emitting:
+
+		queue_free()
+		
+"
+
+[sub_resource type="CanvasItemMaterial" id=2]
+blend_mode = 1
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0.0180505, 0.0419162, 0.0479042, 0.329341, 0.33935 )
+colors = PoolColorArray( 0.851813, 0.0465088, 0.992188, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0.984375, 0.342224, 0.492728, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 150, 0 )
+initial_velocity = 26.38
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 51.46
+scale = 6.0
+color_ramp = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+
+[sub_resource type="ParticlesMaterial" id=7]
+next_pass = SubResource( 6 )
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 50, 0 )
+initial_velocity = 28.69
+initial_velocity_random = 0.52
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color = Color( 1, 0.607843, 0, 1 )
+
+[node name="explosion" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="particles" type="Particles2D" parent="."]
+material = SubResource( 2 )
+emitting = false
+amount = 50
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.81
+process_material = SubResource( 5 )
+
+[node name="sparks" type="Particles2D" parent="."]
+emitting = false
+amount = 50
+one_shot = true
+explosiveness = 0.82
+process_material = SubResource( 7 )
